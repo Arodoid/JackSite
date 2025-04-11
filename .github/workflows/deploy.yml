@@ -17,7 +17,13 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Build Vite site
+        run: npm run build
+
+      - name: Install compute-js dependencies
         working-directory: ./compute-js
         run: npm install
 
