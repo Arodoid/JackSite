@@ -17,11 +17,9 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
+      - name: Install dependencies (inside compute-js)
+        working-directory: ./compute-js
+        run: npm install
 
       - name: Setup Fastly CLI
         run: |
@@ -29,9 +27,7 @@ jobs:
           echo "$HOME/.fastly/bin" >> $GITHUB_PATH
 
       - name: Deploy to Fastly
-        run: |
-          cd compute-js
-          npm install
-          fastly compute publish --non-interactive
+        working-directory: ./compute-js
+        run: fastly compute publish --non-interactive
         env:
           FASTLY_API_TOKEN: ${{ secrets.FASTLY_API_TOKEN }}
